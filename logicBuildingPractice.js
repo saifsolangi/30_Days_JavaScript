@@ -1,3 +1,5 @@
+
+
 // reverse String
 function reverseString(str) {
     temp = str.length - 1
@@ -24,6 +26,16 @@ function checkVowels(str) {
 }
 
 
+// Factorial
+function findFactorial(n) {
+    let factorial = 1;
+    while (n > 1) {
+        factorial *= n
+        n--
+    }
+    return factorial
+}
+console.log(findFactorial(5))
 
 
 
