@@ -5,7 +5,7 @@ const infoDisplay = document.querySelector("#info")
 const startCells = ["", "", "", "", "", "", "", "", ""]
 
 let go = "circle"
-infoDisplay.textContent = "Circle goes first"
+infoDisplay.textContent = "Circle's turn"
 
 function createBoard() {
     startCells.forEach((_cell, index) => {
@@ -20,19 +20,20 @@ function createBoard() {
 createBoard()
 
 function addGo(e) {
-    const goDisplay = document.createElement('div')
-    goDisplay.classList.add(go)
-    e.target.append(goDisplay)
-    go = go === "circle" ? "cross" : "circle"
-    infoDisplay.textContent = "it is now " + go + "'s go"
-    e.target.removeEventListener("click", addGo)
-    checkScore()
+    if (!e.target.firstChild) {
+        const goDisplay = document.createElement('div')
+        goDisplay.classList.add(go)
+        e.target.append(goDisplay)
+
+        go = (go === "circle") ? "cross" : "circle"
+        infoDisplay.textContent = (go === "circle") ? "Circle's turn" : "Cross's turn"
+
+        checkScore()
+    }
 }
 
 function checkScore() {
-
     const allSquares = document.querySelectorAll(".square")
-    console.log(allSquares[0])
 
     const winningCombos = [
         [0, 1, 2], [3, 4, 5], [6, 7, 8],
@@ -49,7 +50,6 @@ function checkScore() {
             allSquares.forEach(square => square.replaceWith(square.cloneNode(true)))
             return
         }
-
     })
 
     winningCombos.forEach(array => {
@@ -61,8 +61,11 @@ function checkScore() {
             allSquares.forEach(square => square.replaceWith(square.cloneNode(true)))
             return
         }
-
     })
+
+    if ([...allSquares].every(square => square.firstChild)) {
+        infoDisplay.textContent = "It's a Draw!"
+    }
 }
 
 const restartButton = document.getElementById("restart")
@@ -71,5 +74,3 @@ restartButton.addEventListener("click", resetGame);
 function resetGame() {
     window.location.reload();
 }
-
-
