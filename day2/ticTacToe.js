@@ -1,11 +1,10 @@
-
 const gameboard = document.querySelector("#gameboard")
 const infoDisplay = document.querySelector("#info")
 
 const startCells = ["", "", "", "", "", "", "", "", ""]
 
 let go = "circle"
-infoDisplay.textContent = "Circle's turn"
+infoDisplay.textContent = "Circle goes first"
 
 function createBoard() {
     startCells.forEach((_cell, index) => {
@@ -20,20 +19,19 @@ function createBoard() {
 createBoard()
 
 function addGo(e) {
-    if (!e.target.firstChild) {
-        const goDisplay = document.createElement('div')
-        goDisplay.classList.add(go)
-        e.target.append(goDisplay)
-
-        go = (go === "circle") ? "cross" : "circle"
-        infoDisplay.textContent = (go === "circle") ? "Circle's turn" : "Cross's turn"
-
-        checkScore()
-    }
+    const goDisplay = document.createElement('div')
+    goDisplay.classList.add(go)
+    e.target.append(goDisplay)
+    go = go === "circle" ? "cross" : "circle"
+    infoDisplay.textContent = go + "'s turn"
+    e.target.removeEventListener("click", addGo)
+    checkScore()
 }
 
 function checkScore() {
+
     const allSquares = document.querySelectorAll(".square")
+    console.log(allSquares[0])
 
     const winningCombos = [
         [0, 1, 2], [3, 4, 5], [6, 7, 8],
@@ -50,6 +48,7 @@ function checkScore() {
             allSquares.forEach(square => square.replaceWith(square.cloneNode(true)))
             return
         }
+
     })
 
     winningCombos.forEach(array => {
@@ -61,16 +60,31 @@ function checkScore() {
             allSquares.forEach(square => square.replaceWith(square.cloneNode(true)))
             return
         }
-    })
 
-    if ([...allSquares].every(square => square.firstChild)) {
-        infoDisplay.textContent = "It's a Draw!"
-    }
+    })
 }
 
 const restartButton = document.getElementById("restart")
-restartButton.addEventListener("click", resetGame);
+restartButton.addEventListener("click", restartGame);
+
+function restartGame() {
+    window.location.reload();
+}
+
+
+const resetButton = document.getElementById("reset")
+resetButton.addEventListener("click", resetGame)
 
 function resetGame() {
-    window.location.reload();
+    const allSquares = document.querySelectorAll(".square");
+    allSquares.forEach(square => square.innerHTML = "");
+    go = "circle";
+    infoDisplay.textContent = "Circle's turn";
+
+    enableClicks();
+}
+
+function enableClicks() {
+    const allSquares = document.querySelectorAll(".square");
+    allSquares.forEach(square => square.addEventListener("click", addGo));
 }
