@@ -5,7 +5,8 @@ function App() {
   return (
     <>
       <div>Hello</div>
-      <Video />
+      <Video title="React JS Tutorial" />
+      <Video title="Node JS Tutorial" />
 
     </>
   )
