@@ -1,16 +1,17 @@
-import Video from './components/video';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import './App.css';
+import Home from "./components/Home";
+import About from "./components/About";
 
 function App() {
-
   return (
-    <>
-      <div>Hello</div>
-      <Video title="React JS Tutorial" />
-      <Video title="Node JS Tutorial" />
-
-    </>
-  )
-
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/about" element={<About />} />
+      </Routes>
+    </BrowserRouter>
+  );
 }
 
 export default App;
